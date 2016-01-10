@@ -1,10 +1,21 @@
 # USB game controller 
 
-Minimus AVR USB 32 
+Based on: 
 
-[more doc](https://github.com/grib00/minimus-toys/blob/master/doc/README.md)
+[Minimus AVR USB 32](https://github.com/grib00/minimus-toys/blob/master/doc/README.md)
 
-LUFA
+[LUFA](http://www.fourwalledcubicle.com/LUFA.php)
+
+## Build and flash
+
+    git clone https://github.com/abcminiuser/lufa.git
+    git clone https://github.com/grib00/minimus-arcade-controller.git
+    cd minimus-arcade-controller
+    make
+
+Plug minimus and prepare to flashing
+
+    sudo make flash
 
 ## See also
 
