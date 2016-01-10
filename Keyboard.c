@@ -100,10 +100,13 @@ void SetupHardware()
 #endif
 
 	/* Hardware Initialization */
-	//Joystick_Init();
 	LEDs_Init();
-	Buttons_Init();
+
 	USB_Init();
+
+	/* Ports for button scanning */
+	DDRD = 0b01100000; // B Ports are in input mode (except 2 LEDs)
+	PORTD = 0b10011111; // Enable pull-up
 }
 
 /** Event handler for the library USB Connection event. */
@@ -160,31 +163,20 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 {
 	USB_KeyboardReport_Data_t* KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
 
-	//uint8_t JoyStatus_LCL    = Joystick_GetStatus();
-	uint8_t ButtonStatus_LCL = Buttons_GetStatus();
+	uint8_t buttons = PIND;
 
-	uint8_t UsedKeyCodes = 0;
+	uint8_t count = 0;
 
-	/*if (JoyStatus_LCL & JOY_UP)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_A;
-	else if (JoyStatus_LCL & JOY_DOWN)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_B;
+	if ((buttons & 0b00000001) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_A;
+	if ((buttons & 0b00000010) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_B;
+	if ((buttons & 0b00000100) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_C;
+	if ((buttons & 0b00001000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_D;
+	if ((buttons & 0b00010000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_E;
 
-	if (JoyStatus_LCL & JOY_LEFT)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_C;
-	else if (JoyStatus_LCL & JOY_RIGHT)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_D;
-
-	if (JoyStatus_LCL & JOY_PRESS)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_E;*/
-
-	if (ButtonStatus_LCL & BUTTONS_BUTTON1)
-	  KeyboardReport->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_F;
-
-	if (UsedKeyCodes)
-	  KeyboardReport->Modifier = HID_KEYBOARD_MODIFIER_LEFTSHIFT;
+	if ((buttons & 0b10000000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_H;
 
 	*ReportSize = sizeof(USB_KeyboardReport_Data_t);
+
 	return false;
 }
 
