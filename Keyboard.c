@@ -105,7 +105,9 @@ void SetupHardware()
 	USB_Init();
 
 	/* Ports for button scanning */
-	DDRD = 0b01100000; // B Ports are in input mode (except 2 LEDs)
+	DDRB = 0b00000000; // D Ports are in input mode
+	PORTB = 0b11111111; // Enable pull-up
+	DDRD = 0b01100000; // D Ports are in input mode (except 2 LEDs)
 	PORTD = 0b10011111; // Enable pull-up
 }
 
@@ -163,17 +165,25 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 {
 	USB_KeyboardReport_Data_t* KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
 
-	uint8_t buttons = PIND;
-
 	uint8_t count = 0;
+	uint8_t buttons;
 
-	if ((buttons & 0b00000001) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_A;
-	if ((buttons & 0b00000010) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_B;
-	if ((buttons & 0b00000100) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_C;
-	if ((buttons & 0b00001000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_D;
-	if ((buttons & 0b00010000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_E;
+	buttons = PINB;
+	if ((buttons & 0b00000001) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_UP_ARROW;
+	if ((buttons & 0b00000010) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_DOWN_ARROW;
+	if ((buttons & 0b00000100) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_LEFT_ARROW;
+	if ((buttons & 0b00001000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_RIGHT_ARROW;
+	if ((buttons & 0b00010000) == 0) KeyboardReport->Modifier |= HID_KEYBOARD_MODIFIER_LEFTCTRL;
+	if ((buttons & 0b01000000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_5_AND_PERCENTAGE;
+	if ((buttons & 0b10000000) == 0) KeyboardReport->Modifier |= HID_KEYBOARD_MODIFIER_LEFTALT;
 
-	if ((buttons & 0b10000000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_H;
+	buttons = PIND;
+	if ((buttons & 0b00000001) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_R;
+	if ((buttons & 0b00000010) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_F;
+	if ((buttons & 0b00000100) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_D;
+	if ((buttons & 0b00001000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_G;
+	if ((buttons & 0b00010000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_Q;
+	if ((buttons & 0b10000000) == 0) KeyboardReport->KeyCode[count++] = HID_KEYBOARD_SC_S;
 
 	*ReportSize = sizeof(USB_KeyboardReport_Data_t);
 
