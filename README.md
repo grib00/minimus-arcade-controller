@@ -6,6 +6,10 @@ Based on:
 
 [LUFA](http://www.fourwalledcubicle.com/LUFA.php)
 
+## Button / input mapping
+
+|Button|Port  |Code  |
+
 ## Build and flash
 
     git clone https://github.com/abcminiuser/lufa.git
