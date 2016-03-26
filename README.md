@@ -8,7 +8,9 @@ Based on:
 
 ## Button / input mapping
 
-|Button|Port  |Code  |
+| Button | Port   | Code   |
+|--------|--------|--------|
+|        |        |        |
 
 ## Build and flash
 
