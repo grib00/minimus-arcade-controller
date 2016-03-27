@@ -10,19 +10,19 @@ Based on:
 
 | Button  | Port   | Code   | Color  |
 |---------|--------|--------|--------|
-| 1 up    | B0     | up     | blue   |
+| 1 up    | B0     | up     | purple |
 | 1 down  | B1     | down   | orange |
 | 1 left  | B2     | left   | yellow |
 | 1 right | B3     | right  | brown  |
 | 1 but1  | B4     | ctrl   | grey   |
-| 1 but2  | B7     | alt    | purple |
-| 2 up    | D0     | R      | blue   |
+| 1 but2  | B7     | alt    | white  |
+| 2 up    | D0     | R      | purple |
 | 2 down  | D1     | F      | orange |
 | 2 left  | D2     | D      | yellow |
 | 2 right | D3     | G      | brown  |
 | 2 but1  | D4     | Q      | grey   |
-| 2 but2  | D7     | S      | purple |
-| COIN    | B6     | 5      | white  |
+| 2 but2  | D7     | S      | white  |
+| COIN    | B6     | 5      | copper |
 
 ## Build and flash
 
